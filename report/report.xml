@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_cust_report" model="ir.actions.report">
+            <field name="name">Research Report</field>
+            <field name="model">report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">research_management.print_report_template</field>
+            <field name="report_file">research_management.print_report_template</field>
+            <field name="print_report_name">'Reserved List '</field>
+            <field name="binding_model_id" ref="model_report_wizard"/>
+        </record>
+        <record id="action_book_report" model="ir.actions.report">
+            <field name="name">Research Report</field>
+            <field name="model">report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">research_management.print_book_report_template</field>
+            <field name="report_file">research_management.print_book_report_template</field>
+            <field name="print_report_name">'Reserved List '</field>
+            <field name="binding_model_id" ref="model_report_wizard"/>
+        </record>
+    </data>
+    <template id="print_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <center>
+                        <h1>Reserved List</h1>
+                        <t t-if="customer_id">
+                            <h3>
+                                <label>
+                                    <b>
+                                        Scholar:
+                                    </b>
+                                </label>
+                                <t t-esc="customer_id"/>
+                            </h3>
+                        </t>
+                        <div>
+                            <t t-if="from_date">
+                                <label>
+                                    <b>
+                                        From:
+                                    </b>
+                                </label>
+                                <t t-esc="from_date"/>
+                            </t>
+                        </div>
+                        <t t-if="to_date">
+                            <label>
+                                <b>
+                                    To:
+                                </b>
+                            </label>
+                            <t t-esc="to_date"/>
+                        </t>
+                        <t t-if="today">
+                            <label>
+                                <b>
+                                    Date:
+                                </b>
+                            </label>
+                            <t t-esc="today"/>
+                        </t>
+                    </center>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>Order Reference</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="s" t-value="1"/>
+                            <tr t-foreach="data_1" t-as="i">
+                                <td>
+                                    <span t-esc="s"/>
+                                    <t t-set="s" t-value="s+1"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['reference_no']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['status']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['reserved_date']"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="print_book_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <center>
+                        <h1>Reserved List</h1>
+                        <t t-if="book_id">
+                        </t>
+                        <div>
+                            <t t-if="from_date">
+                                <label>
+                                    <b>
+                                        From:
+                                    </b>
+                                </label>
+                                <t t-esc="from_date"/>
+                            </t>
+                        </div>
+                        <t t-if="to_date">
+                            <label>
+                                <b>
+                                    To:
+                                </b>
+                            </label>
+                            <t t-esc="to_date"/>
+                        </t>
+                        <t t-if="today">
+                            <label>
+                                <b>
+                                    Date:
+                                </b>
+                            </label>
+                            <t t-esc="today"/>
+                        </t>
+                    </center>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>Order Reference</th>
+                                <th>Scholar</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="s" t-value="1"/>
+                            <tr t-foreach="data_1" t-as="i">
+                                <tr t-foreach="i" t-as="j">
+                                    <td>
+                                        <span t-esc="s"/>
+                                        <t t-set="s" t-value="s+1"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="j['reference_no']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="j['fullname']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="j['name']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="j['status']"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="j['reserved_date']"/>
+                                    </td>
+                                </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

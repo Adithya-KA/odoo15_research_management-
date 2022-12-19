@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+         <record id="seq_scholar" model="ir.sequence">
+               <field name="name">scholar_Sequence</field>
+               <field name="code">research.management</field>
+               <field name="prefix">SCH</field>
+               <field name="padding">7</field>
+        </record>
+    </data>
+
+</odoo>

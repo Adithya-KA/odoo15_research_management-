@@ -1,0 +1,6 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_research_management,access_research_management,model_research_management,base.group_user,1,1,1,1
+access_research_institute,access_research_institute,model_research_institute,base.group_user,1,1,1,1
+access_book_res,access_book_res,model_book_res,base.group_user,1,1,1,1
+access_product_select,access_product_select,model_product_select,base.group_user,1,1,1,1
+access_report_wizard,access.report.wizard,model_report_wizard,base.group_user,1,1,1,1

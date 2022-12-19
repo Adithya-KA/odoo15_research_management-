@@ -1,0 +1,15 @@
+<odoo>
+    <record model="ir.module.category" id="research_management_security">
+                 <field name="name">Research Management</field>
+                 <field name="description">Access for research management</field>
+                 <field name="sequence">10</field>
+    </record>
+    <record id="research_management_user_access" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="research_management_security" />
+    </record>
+    <record id="research_management_manager_access" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="research_management_security"/>
+    </record>
+</odoo>

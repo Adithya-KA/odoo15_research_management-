@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+                <!--scholar-->
+
+        <record id="research_menu_item" model="ir.actions.act_window">
+            <field name="name">Research Management</field>
+            <field name="res_model">research.management</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="research_menu_item_view_tree" model="ir.ui.view">
+            <field name="name">Research Management</field>
+            <field name="model">research.management</field>
+            <field name="arch" type="xml">
+                <tree string="Research Management">
+                    <field name="sequence_no"/>
+                    <field name="scholar_id"/>
+                    <field name="fullname"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                </tree>
+            </field>
+        </record>
+        <record id="research_menu_item_view_form" model="ir.ui.view">
+            <field name="name">Research Management</field>
+            <field name="model">research.management</field>
+            <field name="arch" type="xml">
+                <form string="Research Management">
+                    <sheet>
+                        <group>
+                            <div class="oe-title">
+                                <h1>
+                                    <field name="sequence_no" readonly="1"/>
+                                </h1>
+                            </div>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="first_name"/>
+                                <field name="middle_name"/>
+                                <field name="last_name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="scholar_id"/>
+                            </group>
+                            <group>
+                                <field name="age"/>
+                            </group>
+                            <group>
+                                <field name="gender"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Institution Information">
+                                <group>
+                                    <group>
+                                        <field name="res_institute"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <group>
+                                        <field name="related_partner"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Customer-->
+
+        <record id="partners_customizations_form" model="ir.ui.view">
+            <field name="name">partners.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="is_scholar"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--Book reservation-->
+
+        <record id="book_menu_action" model="ir.actions.act_window">
+            <field name="name">Book Reservation</field>
+            <field name="res_model">book.res</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_my_documents":1}</field>
+        </record>
+        <record id="book_menu_action_view_tree" model="ir.ui.view">
+            <field name="name">Book Reservation</field>
+            <field name="model">book.res</field>
+            <field name="arch" type="xml">
+                <tree string="Book reservation">
+                    <field name="scholar_book_ids"/>
+                    <field name="reference_no"/>
+                </tree>
+            </field>
+        </record>
+        <record id="book_menu_action_view_form" model="ir.ui.view">
+            <field name="name">Book Reservation.form</field>
+            <field name="model">book.res</field>
+            <field name="arch" type="xml">
+                <form string="book_reservation">
+                    <header>
+                        <button name="button_submitted" class="oe_highlight" string="Submit" type="object"
+                                help="Move reservation to submitted state"
+                                attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                        <button name="button_approved" groups="research_management.research_management_manager_access"
+                                class="oe_highlight" string="Approve" type="object"
+                                help="Move reservation to approved state"
+                                attrs="{'invisible': [('status', '!=', 'submitted')]}"/>
+                        <button name="button_rejected" groups="research_management.research_management_manager_access"
+                                class="oe_highlight" string="Reject" type="object"
+                                help="Move reservation to rejected state"
+                                attrs="{'invisible': [('status', '!=', 'submitted')]}"/>
+                        <field name="status" widget="statusbar"/>
+                        <button name="button_invoice" class="oe_highlight" string="Create Invoice" type="object"
+                                help="You can create invoice" attrs="{'invisible': [('status', '!=', 'approved')]}"/>
+                    </header>
+                    <!--                smart tab invoice-->
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="invoice_smart_tab"
+                                    icon="fa-pencil-square-o"
+                                    string="Invoice"
+                                    attrs="{'invisible': [('is_visibility','=', False)]}"/>
+                            <field name="is_visibility" invisible="1"/>
+                        </div>
+                        <group>
+                            <div class="oe-title">
+                                <h1>
+                                    <field name="reference_no" readonly="1"/>
+                                </h1>
+                            </div>
+                            <group>
+                                <field name="scholar_book_ids"/>
+                                <field name="reserved_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string=" Order Lines">
+                                <field name="product_ids" position="replace">
+                                    <tree editable="bottom">
+                                        <field name="product_name_id" domain="[('is_book', '=', 'True')]"/>
+                                        <field name="description_id"/>
+                                        <field name="price"/>
+                                        <field name="def_code"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <group>
+                                        <field name="responsible_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_customizations_form" model="ir.ui.view">
+            <field name="name">product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="purchase_ok" position="before">
+                    <field name="is_book"/>
+                    <label for="is_book" string="Is Book"/>
+                </field>
+            </field>
+        </record>
+        <!--    Book Reservation xpath-->
+
+        <record id="book_reservation_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="validity_date" position="after">
+                    <field name="book_reservation_id"/>
+                </field>
+            </field>
+        </record>
+
+        <!--    institute-->
+        <record id="menu_institute_action" model="ir.actions.act_window">
+            <field name="name">Institution</field>
+            <field name="res_model">research.institute</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="menu_institute_action_view_tree" model="ir.ui.view">
+            <field name="name">institute</field>
+            <field name="model">research.institute</field>
+            <field name="arch" type="xml">
+                <tree string="institute">
+                    <field name="institute"/>
+                    <field name="course"/>
+                    <field name="location"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_institute_action_view_form" model="ir.ui.view">
+            <field name="name">institute.form</field>
+            <field name="model">research.institute</field>
+            <field name="arch" type="xml">
+                <form string="institute">
+                    <sheet>
+                        <h1>
+                            <field name="institute"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="course"/>
+                            </group>
+                            <group>
+                                <field name="location"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--   filters and group by-->
+
+        <record id="research_management_view_search" model="ir.ui.view">
+            <field name="name">research.management.search</field>
+            <field name="model">research.management</field>
+            <field name="arch" type="xml">
+                <search string="Research Management">
+                    <field name="related_partner"/>
+                    <filter string="Scholar" name="first_name" context="{'group_by': 'first_name'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!--user own document filter-->
+        <record id="book_reservation_view_search" model="ir.ui.view">
+            <field name="name">book.reservation.search</field>
+            <field name="model">book.res</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Rejected" name="status" domain="[('status', 'in', ['rejected'])]"/>
+                    <filter string="My documents" name="my_documents" domain="[('responsible_id', '=', uid)]"/>
+                </search>
+            </field>
+        </record>
+        <!--    menu-->
+
+        <menuitem id="research_menu" name="Research Management"/>
+        <menuitem id="research_menu_action" name="Scholars" parent="research_menu"
+                  sequence="1"/>
+        <menuitem id="scholar_option_menu" name="Scholar" parent="research_menu_action" action="research_menu_item"
+                  sequence="1"/>
+        <menuitem id="book_reservation_menu" name="Book Reservation" parent="research_menu_action"
+                  action="book_menu_action"
+                  sequence="2"/>
+        <menuitem id="report_menu" name="Report" parent="research_menu" sequence="2"/>
+        <menuitem id="research_scholar_menu" name="Configuration" parent="research_menu" sequence="3"/>
+        <menuitem id="scholar_menu_action" name="Institution" parent="research_scholar_menu"
+                  action="menu_institute_action"
+                  sequence="3"/>
+    </data>
+</odoo>
